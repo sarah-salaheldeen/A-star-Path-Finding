@@ -12,12 +12,15 @@ public class Node {
     private ArrayList<Node> adjacencyList;
     private ArrayList<Edge> edgeList = new ArrayList<>();
     private Node parent;
+    private boolean valid;
 
     public Node(String id){
         this.id = id;
         adjacencyList = new ArrayList<>();
         //this.cost = cost;
     }
+
+    //public abstract int distanceTo(Node dest);
 
     //Getter method for start vertex
     public String getId(){
@@ -44,6 +47,23 @@ public class Node {
         }
         this.g = this.parent.getG() + this.cost;
         return this.g;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public int getCost(Node current) {
+        for (Edge edge : this.edgeList) {
+            if (edge.getNode1() == current || edge.getNode2() == current) {
+                return edge.getCost();
+            }
+        }
+        return 0;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public void setG(int g){
@@ -80,5 +100,22 @@ public class Node {
 
     public void setParent(Node parent){
         this.parent = parent;
+    }
+
+    public boolean seen(Node node) {
+        if(this == node)
+            return true;
+        else if(parent == null)
+            return false;
+        else
+            return this.parent.seen(node);
+    }
+
+    public void setValid(boolean valid){
+        this.valid = valid;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 }
